@@ -22,17 +22,19 @@ Matrix_s *CreatMatrix(IN unsigned int ucHang,
 {
     int i = 0;
     int j = 0;
-    Matrix_s *pstMatrix = (Matrix_s*)malloc(sizeof(Matrix_s));
+    Matrix_s *pstMatrix = NULL;
+    pstMatrix = (Matrix_s*)malloc(sizeof(Matrix_s) * 2);
+
     if (pvData == NULL || pstMatrix == NULL)
     {
         printf("Creat matrix fault.\r\n");
         return NULL;
     }
 
-    memset(pstMatrix, 0, sizeof(Matrix_s));
+    bzero(pstMatrix, sizeof(Matrix_s));
     pstMatrix->ucHang = ucHang;
     pstMatrix->ucLie = ucLie;
-    pstMatrix->pfDataAddr = (float**)malloc((sizeof(float) * ucHang));
+    pstMatrix->pfDataAddr = (float**)malloc((sizeof(float*) * ucHang));
 
     if(pstMatrix->pfDataAddr == NULL)
     {
@@ -41,19 +43,19 @@ Matrix_s *CreatMatrix(IN unsigned int ucHang,
     }
     else
     {
-        for(i = 0;i < pstMatrix->ucHang;i++)
+        for(i = 0; i<ucHang; i++)
         {
             (pstMatrix->pfDataAddr)[i] = (float*)malloc((sizeof(float) * ucLie));
-			if((pstMatrix->pfDataAddr)[i] == NULL)
-    		{
-     			printf("Creat matrix fault.\r\n");
-       			return NULL;
-   			}
-            for(j = 0;j < pstMatrix->ucLie;j++)
+            if((pstMatrix->pfDataAddr)[i] == NULL)
+            {
+                printf("Creat matrix fault.\r\n");
+                return NULL;
+            }
+            for(j=0; j<ucLie; j++)
             {
                 (pstMatrix->pfDataAddr)[i][j] = pvData[i*ucLie + j];
-            }				
-        }	
+            }
+        }
     }
 
     return pstMatrix;
@@ -61,24 +63,26 @@ Matrix_s *CreatMatrix(IN unsigned int ucHang,
 
 BOOL DestoryMatrix(IN Matrix_s *pstMatrix)
 {
+    if(pstMatrix == NULL)
+    {
+        return TRUE;
+    }
     int tmp = pstMatrix->ucHang;
     while( tmp > 0 )
     {
         if ((pstMatrix->pfDataAddr)[tmp-1] != NULL)
         {
+            printf("free ");
             free((pstMatrix->pfDataAddr)[tmp-1]);
             (pstMatrix->pfDataAddr)[tmp-1] = NULL;
         }
         tmp--;
     }
 
-    free(pstMatrix->pfDataAddr);
+    printf("\n");
 
-    if(pstMatrix != NULL)
-    {
-        free(pstMatrix);
-        pstMatrix = NULL;
-    }
+    free(pstMatrix->pfDataAddr);
+    free(pstMatrix);
 }
 
 unsigned int GetMatrixRow(IN const Matrix_s *pstMatrix)
