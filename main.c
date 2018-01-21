@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
 									{1.0,0.0}};
 
 
-    Matrix_s *pstMatrix_A = CreatMatrix(TEST_ROW, TEST_COL, &TEST_data1[0][0]);
+    Matrix_s *pstMatrix_A = CreatMatrix_eye(5);//CreatMatrix(TEST_ROW, TEST_COL, &TEST_data1[0][0]);
     Matrix_s *pstMatrix_B = CreatMatrix(TEST_ROW, TEST_COL, &TEST_data2[0][0]);
 	Matrix_s *pstMatrix_C = CreatMatrix(TEST_COL, TEST_ROW, &TEST_data3[0][0]);
 

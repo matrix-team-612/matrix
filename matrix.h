@@ -22,6 +22,8 @@ typedef struct tagMatrix
 
 
 Matrix_s *CreatMatrix(IN unsigned int ucHang, IN unsigned int ucLie, IN float *pvData);
+Matrix_s *CreatMatrix_eye(IN unsigned int ucHang);
+Matrix_s *CreatMatrix_zeros(IN unsigned int ucHang, IN unsigned int ucLie);
 BOOL DestoryMatrix(IN Matrix_s *pstMatrix);
 unsigned int GetMatrixRow(const Matrix_s *pstMatrixA);
 unsigned int GetMatrixCol(const Matrix_s *pstMatrixA);

@@ -23,7 +23,7 @@ Matrix_s *CreatMatrix(IN unsigned int ucHang,
     int i = 0;
     int j = 0;
     Matrix_s *pstMatrix = NULL;
-    pstMatrix = (Matrix_s*)malloc(sizeof(Matrix_s) * 2);
+    pstMatrix = (Matrix_s*)malloc(sizeof(Matrix_s));
 
     if (pvData == NULL || pstMatrix == NULL)
     {
@@ -31,10 +31,10 @@ Matrix_s *CreatMatrix(IN unsigned int ucHang,
         return NULL;
     }
 
-    bzero(pstMatrix, sizeof(Matrix_s));
+    memset(pstMatrix, 0x0,sizeof(Matrix_s));
     pstMatrix->ucHang = ucHang;
     pstMatrix->ucLie = ucLie;
-    pstMatrix->pfDataAddr = (float**)malloc((sizeof(float*) * ucHang));
+    pstMatrix->pfDataAddr = (float**)malloc((sizeof(float*) * pstMatrix->ucHang));
 
     if(pstMatrix->pfDataAddr == NULL)
     {
@@ -43,15 +43,15 @@ Matrix_s *CreatMatrix(IN unsigned int ucHang,
     }
     else
     {
-        for(i = 0; i<ucHang; i++)
+        for(i = 0; i < pstMatrix->ucHang; i++)
         {
-            (pstMatrix->pfDataAddr)[i] = (float*)malloc((sizeof(float) * ucLie));
+            (pstMatrix->pfDataAddr)[i] = (float*)malloc((sizeof(float) * pstMatrix->ucLie));
             if((pstMatrix->pfDataAddr)[i] == NULL)
             {
                 printf("Creat matrix fault.\r\n");
                 return NULL;
             }
-            for(j=0; j<ucLie; j++)
+            for(j=0; j < pstMatrix->ucLie; j++)
             {
                 (pstMatrix->pfDataAddr)[i][j] = pvData[i*ucLie + j];
             }
@@ -59,6 +59,46 @@ Matrix_s *CreatMatrix(IN unsigned int ucHang,
     }
 
     return pstMatrix;
+}
+
+Matrix_s *CreatMatrix_eye(IN unsigned int ucHang)
+{
+	int i;
+	int j;
+	float* tmp = (float*)malloc((sizeof(float) * ucHang * ucHang));
+	for(i = 0; i <  ucHang; i++)
+	{
+		for(j = 0; j< ucHang;j++)
+		{
+			if(i == j)
+			{
+				*(tmp+i*ucHang+j) = 1.0;
+			}
+			else
+			{
+				*(tmp+i*ucHang+j) = 0.0;
+			}
+		}
+	}		
+	Matrix_s * pstMatrix_Result = CreatMatrix(ucHang, ucHang, tmp);
+	free(tmp);
+	
+    return pstMatrix_Result;
+}
+
+Matrix_s *CreatMatrix_zeros(IN unsigned int ucHang, 
+      IN unsigned int ucLie)
+{
+	int i;
+	float* tmp = (float*)malloc((sizeof(float) * ucHang * ucLie));
+	for(i = 0; i <  (ucHang * ucLie); i++)
+	{
+		*(tmp+i) = 0.0;
+	}		
+	Matrix_s * pstMatrix_Result = CreatMatrix(ucHang, ucLie, tmp);
+	free(tmp);
+	
+    return pstMatrix_Result;
 }
 
 BOOL DestoryMatrix(IN Matrix_s *pstMatrix)
@@ -72,14 +112,11 @@ BOOL DestoryMatrix(IN Matrix_s *pstMatrix)
     {
         if ((pstMatrix->pfDataAddr)[tmp-1] != NULL)
         {
-            printf("free ");
             free((pstMatrix->pfDataAddr)[tmp-1]);
             (pstMatrix->pfDataAddr)[tmp-1] = NULL;
         }
         tmp--;
     }
-
-    printf("\n");
 
     free(pstMatrix->pfDataAddr);
     free(pstMatrix);
