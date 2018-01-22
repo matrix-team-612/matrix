@@ -146,7 +146,7 @@ Matrix_s *TransposeMatrix(IN const Matrix_s *pstMatrixA)//转置
 	pstMatrixResult->ucHang = pstMatrixA->ucLie;
 	pstMatrixResult->ucLie = pstMatrixA->ucHang;
 	
-	pstMatrixResult->pfDataAddr = (float **)malloc(sizeof(float) * (pstMatrixResult->ucHang));
+	pstMatrixResult->pfDataAddr = (float **)malloc(sizeof(float*) * (pstMatrixResult->ucHang));
 	if(NULL == pstMatrixResult->pfDataAddr)
 	{
 		printf("Malloc Matrix_Result->pfDataAddr fault.\r\n");
@@ -191,7 +191,7 @@ Matrix_s *AddMatrix(IN const Matrix_s *pstMatrixA,
     pstMatrixResult->ucHang = pstMatrixA->ucHang;
     pstMatrixResult->ucLie = pstMatrixA->ucLie;
 
-    pstMatrixResult->pfDataAddr = (float **)malloc(sizeof(float)*(pstMatrixResult->ucHang));
+    pstMatrixResult->pfDataAddr = (float **)malloc(sizeof(float*)*(pstMatrixResult->ucHang));
 	if(NULL == pstMatrixResult->pfDataAddr)
     {
     	printf("Malloc Matrix_Result->pfDataAddr fault.\r\n");
@@ -237,7 +237,7 @@ Matrix_s *SubtractMatrix(IN const Matrix_s *pstMatrixA,
     pstMatrixResult->ucHang = pstMatrixA->ucHang;
     pstMatrixResult->ucLie = pstMatrixA->ucLie;
 
-    pstMatrixResult->pfDataAddr = (float **)malloc(sizeof(float) * (pstMatrixResult->ucHang));
+    pstMatrixResult->pfDataAddr = (float **)malloc(sizeof(float*) * (pstMatrixResult->ucHang));
 	if(NULL == pstMatrixResult->pfDataAddr)
     {
     	printf("Malloc Matrix_Result->pfDataAddr fault.\r\n");
@@ -283,7 +283,7 @@ Matrix_s *MultiplyMatrix_shucheng(IN const Matrix_s *pstMatrixA,
     pstMatrixResult->ucHang = pstMatrixA->ucHang;
     pstMatrixResult->ucLie = pstMatrixB->ucLie;
 
-    pstMatrixResult->pfDataAddr = (float **)malloc(sizeof(float) * (pstMatrixResult->ucHang));
+    pstMatrixResult->pfDataAddr = (float **)malloc(sizeof(float*) * (pstMatrixResult->ucHang));
 	if(NULL == pstMatrixResult->pfDataAddr)
     {
     	printf("Malloc Matrix_Result->pfDataAddr fault.\r\n");
@@ -327,7 +327,7 @@ Matrix_s *MultiplyMatrix_diancheng(IN const Matrix_s *pstMatrixA,
 	pstMatrixResult->ucHang = pstMatrixA->ucHang;
 	pstMatrixResult->ucLie = pstMatrixA->ucLie;
 		
-	pstMatrixResult->pfDataAddr = (float **)malloc(sizeof(float) * (pstMatrixResult->ucHang));
+	pstMatrixResult->pfDataAddr = (float **)malloc(sizeof(float*) * (pstMatrixResult->ucHang));
 	if(NULL == pstMatrixResult->pfDataAddr)
 	{
 		printf("Malloc Matrix_Result->pfDataAddr fault.\r\n");
